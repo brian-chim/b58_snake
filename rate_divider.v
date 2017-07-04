@@ -6,7 +6,7 @@ module RateDivider(enable_out, SW, clk, clear_b);
 	reg [27:0] register;
 	wire enable = SW[2];
 	always @ (posedge clk)
-   begin
+   	begin
 		if(enable)
 			begin
 				if (clear_b == 1'b1)
