@@ -5,7 +5,7 @@ module RateDivider(enable_out, SW, clk, clear_b);
 	reg [27:0] register;
 	wire enable = SW[2];
 	always @ (posedge clk)
-   begin
+	begin
 		if(enable)
 			begin
 				if (clear_b == 1'b1)
@@ -21,7 +21,7 @@ module RateDivider(enable_out, SW, clk, clear_b);
 							end
 						else
 							register <= register - 1'b1;
-					 end
+					end
 				else
 					register <= 0;     // becbeginause resetting would mean you want to restart counter
 			end
