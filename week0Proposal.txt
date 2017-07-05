@@ -15,7 +15,7 @@ Team Member C
 First Name: Mason
 Last Name: Tang
 
-Team Member D (Optional)
+Team Member D
 -------------
 First Name: Richard
 Last Name: Wei
@@ -73,3 +73,4 @@ your code).
  
 Updates
 -------
+N/A
