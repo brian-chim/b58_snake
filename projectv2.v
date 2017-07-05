@@ -65,7 +65,7 @@ module game(SW, KEY, CLOCK_50, HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0
   hex_decoder hex_7(.hex_digit(hex7Seg), .segments(HEX7));
 endmodule
 
-module datapath(clk, ld_x, ld);
+module datapath(clk, reset, game_mode, start, ld_x_p1, ld_y_p1, ld_colour_p1, ld_colour_p2, x_out, y_out, colour_out);
 endmodule
 
 module control();
