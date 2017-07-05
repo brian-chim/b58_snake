@@ -30,7 +30,8 @@ module game(SW, KEY, CLOCK_50, HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0
   
 //   // Let Sw[17] be the switch to control game select
 //   // output reg stuff for the always statement
-//   always(*)
+
+            //   always(*)
 //   begin
 //     if(SW[17] == 1)
 //       // call Tron
@@ -39,41 +40,87 @@ module game(SW, KEY, CLOCK_50, HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0
 //   end
 //  // ------------------------------------------------------------
   
-  snake snake_game(.start(start), .reset(reset_n), .clk(CLOCK_50), .game_mode(game_mode), .player_controls(SW[1:0]),
-                   .highscore_HEX6(hex6Seg), .highscore_HEX7(hex7Seg), .eaten_objects_HEX4(hex4Seg), .eaten_objects_HEX5(hex5Seg), 
-                   .time_HEX0(hex0Seg), .time_HEX1(hex1Seg), .time_HEX2(hex2Seg), .time_HEX3(hex3Seg));
+  snake snake_game(.start(start),
+                   .reset(reset_n), 
+                   .clk(CLOCK_50), 
+                   .game_mode(game_mode), 
+                   .player_controls(SW[1:0]),
+                   .highscore_HEX6(hex6Seg),
+                   .highscore_HEX7(hex7Seg), 
+                   .eaten_objects_HEX4(hex4Seg),
+                   .eaten_objects_HEX5(hex5Seg), 
+                   .time_HEX0(hex0Seg),
+                   .time_HEX1(hex1Seg), 
+                   .time_HEX2(hex2Seg),
+                   .time_HEX3(hex3Seg));
+            
+  tron tron_game(.start(start),
+                 .reset(reset_n), 
+                 .clk(CLOCK_50),
+                 .game_mode(game_mode),
+                 .player1_controls(SW[1:0]),
+                 .player_2_controls(SW[7:6]), 
+                 .player_1_HEX6(hex6Seg),
+                 .player_1_HEX7(hex7Seg), 
+                 .player_2_HEX4(hex4Seg), 
+                 .player_2_HEX5(hex5Seg),
+                 .time_HEX0(hex0Seg), 
+                 .time_HEX1(hex1Seg), 
+                 .time_HEX2(hex2Seg), 
+                 .time_HEX3(hex3Seg));
   
-  tron tron_game(.start(start), .reset(reset_n), .clk(CLOCK_50), .game_mode(game_mode), player1_controls(SW[1:0]),
-                 .player_2_controls(SW[7:6]), .player_1_HEX6(hex6Seg), .player_1_HEX7(hex7Seg), .player_2_HEX4(hex4Seg), 
-                 .player_2_HEX5(hex5Seg), .time_HEX0(hex0Seg), .time_HEX1(hex1Seg), .time_HEX2(hex2Seg), .time_HEX3(hex3Seg));
-  
-  
-  assign HEX7 = hex7Seg;
-  assign HEX6 = hex6Seg;
-  assign HEX5 = hex5Seg;
-  assign HEX4 = hex4Seg;
-  assign HEX3 = hex3Seg;
-  assign HEX2 = hex2Seg;
-  assign HEX1 = hex1Seg;
-  assign HEX0 = hex0seg;
+  hex_decoder hex_0(.hex_digit(hex0Seg), .segments(HEX0));
+  hex_decoder hex_1(.hex_digit(hex1Seg), .segments(HEX1));
+  hex_decoder hex_2(.hex_digit(hex2Seg), .segments(HEX2));
+  hex_decoder hex_3(.hex_digit(hex3Seg), .segments(HEX3));
+  hex_decoder hex_4(.hex_digit(hex4Seg), .segments(HEX4));
+  hex_decoder hex_5(.hex_digit(hex5Seg), .segments(HEX5));
+  hex_decoder hex_6(.hex_digit(hex6Seg), .segments(HEX6));
+  hex_decoder hex_7(.hex_digit(hex7Seg), .segments(HEX7));
 endmodule
 
 
-module snake(start, reset, clk, game_mode, player_controls, highscore_HEX6, highscore_HEX7, eaten_objects_HEX4,
-             eaten_objects_HEX5, time_HEX0, time_HEX1, time_HEX2, time_HEX3);
+module snake(start, 
+             reset, 
+             clk,
+             game_mode,
+             player_controls,
+             highscore_HEX6,
+             highscore_HEX7,
+             eaten_objects_HEX4,
+             eaten_objects_HEX5, 
+             time_HEX0, 
+             time_HEX1,
+             time_HEX2,
+             time_HEX3);
   input start;
-  input CLOCK_50;
-  input game_mode;
   input reset;
-  input [17:0] SW;
-  output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0;
+  input clk;
+  input game_mode;
+  input [1:0] player_controls;
+  output [3:0] highscore_HEX6, highscore_HEX7, eaten_objects_HEX4, eaten_objects_HEX5, time_HEX0, time_HEX1, time_HEX2, time_HEX3;
+            
 endmodule
 
-module tron(start, reset, clk, game_mode, player_1_HEX6, player_1_HEX7, player_2_HEX4, player_2_HEX5, time_HEX0, 
-            time_HEX1, time_HEX2, time_HEX3);
+module tron(start,
+            reset, 
+            clk, 
+            game_mode,
+            player_1_controls,
+            player_2_controls,
+            player_1_HEX6,
+            player_1_HEX7,
+            player_2_HEX4,
+            player_2_HEX5, 
+            time_HEX0, 
+            time_HEX1,
+            time_HEX2, 
+            time_HEX3);
   input start;
-  input CLOCK_50;
-  input game_mode;
   input reset;
-  output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0;
+  input clk;
+  input game_mode;
+  input [1:0] player_1_controls;
+  input [1:0] player_2_controls;
+  output [3:0] highscore_HEX6, highscore_HEX7, eaten_objects_HEX4, eaten_objects_HEX5, time_HEX0, time_HEX1, time_HEX2, time_HEX3;
 endmodule
