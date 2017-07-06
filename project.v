@@ -1,3 +1,4 @@
+
 module game(SW, KEY, CLOCK_50, HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0,
             VGA_CLK, VGA_HS, VGA_BLANK_N, VGA_SYNC_N, VGA_R, VGA_G, VGA_B);
   // Two KEYs will be used. KEY[3] will be our reset button and KEY[2] will be our start button
@@ -5,7 +6,8 @@ module game(SW, KEY, CLOCK_50, HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0,
   input CLOCK_50;
   input [17:0] SW;  
  
-  // HEX displays to keep track of things like time, highscore, and in-game score  output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0;
+  // HEX displays to keep track of things like time, highscore, and in-game score 
+  output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0;
   
   // Outputs for the VGA adapter  output VGA_CLK;
   output VGA_HS;
@@ -17,7 +19,8 @@ module game(SW, KEY, CLOCK_50, HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0,
   // Wires will be used to carry output signals to the hex displays
   wire [6:0] hex7Seg, hex6Seg, hex5Seg, hex4Seg, hex3Seg, hex2Seg, hex1Seg, hex0Seg;
   
-  // Declaration and assignment for our reset, start and game mode button  wire reset_n, start, game_mode;
+  // Declaration and assignment for our reset, start and game mode button 
+  wire reset_n, start, game_mode;
   assign reset_n = KEY[3];
   assign start = KEY[2];
   assign game_mode = SW[17];  
