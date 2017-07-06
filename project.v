@@ -4,10 +4,10 @@ module game(SW, KEY, CLOCK_50, HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0,
   input [3:2] KEY;
   input CLOCK_50;
   input [17:0] SW;  
-  
+ 
   // HEX displays to keep track of things like time, highscore, and in-game score  output [6:0] HEX7, HEX6, HEX5, HEX4, HEX3, HEX2, HEX1, HEX0;
   
-o  // Outputs for the VGA adapter  output VGA_CLK;
+  // Outputs for the VGA adapter  output VGA_CLK;
   output VGA_HS;
   output VGA_BLANK_N; 
   output VGA_SYNC_N;
@@ -30,18 +30,20 @@ o  // Outputs for the VGA adapter  output VGA_CLK;
 //   // output reg stuff for the always statement
 
             //   always(*)
-//   begin//     if(SW[17] == 1)//       // call Tron
+//   begin
+//    if(SW[17] == 1)
+//       // call Tron
 //     else
 //       // call Snake
 //   end
 //  // ------------------------------------------------------------
 
-    vga_adapter VGA(.resetn(reset_n),
+  vga_adapter VGA(.resetn(reset_n),
                   .clock(CLOCK_50),
 	      .colour(colour),
 	      .x(x),
 	      .y(y),	     
-                  .plot(start),
+              .plot(start),
 	      .VGA_R(VGA_R),
 	      .VGA_G(VGA_G),
 	      .VGA_B(VGA_B),
@@ -55,33 +57,33 @@ o  // Outputs for the VGA adapter  output VGA_CLK;
 	defparam VGA.BITS_PER_COLOUR_CHANNEL = 1;
 	defparam VGA.BACKGROUND_IMAGE = "black.mif"
   
-    snake_control snake_c(.start(start),
-                   .reset(reset_n), 
-                   .clk(CLOCK_50), 
-                   .game_mode(game_mode), 
-                   .player_control_x(SW[1]),
-	       .player_control_y(SW[0]),
-                   .highscore_HEX6(hex6Seg),
-                   .highscore_HEX7(hex7Seg), 
-                   .eaten_objects_HEX4(hex4Seg),
-                   .eaten_objects_HEX5(hex5Seg), 
-                   .time_HEX0(hex0Seg),
-                   .time_HEX1(hex1Seg), 
-                   .time_HEX2(hex2Seg),
-                   .time_HEX3(hex3Seg),
-	       .x_load(),
-	       .y_load());
+  snake_control snake_c(.start(start),
+                  .reset(reset_n), 
+                  .clk(CLOCK_50), 
+                  .game_mode(game_mode), 
+                  .player_control_x(SW[1]),
+	          .player_control_y(SW[0]),
+                  .highscore_HEX6(hex6Seg),
+                  .highscore_HEX7(hex7Seg), 
+                  .eaten_objects_HEX4(hex4Seg),
+                  .eaten_objects_HEX5(hex5Seg), 
+                  .time_HEX0(hex0Seg),
+                  .time_HEX1(hex1Seg), 
+                  .time_HEX2(hex2Seg),
+                  .time_HEX3(hex3Seg),
+	          .x_load(),
+	          .y_load());
     
-	snake_datapath snake_d();
+  snake_datapath snake_d();
             
-    tron_control tron_c(.start(start),
+  tron_control tron_c(.start(start),
                  .reset(reset_n), 
                  .clk(CLOCK_50),
                  .game_mode(game_mode),
                  .player1_control_left(SW[1]),
-			.player1_control_right(SW[0]),
+        	 .player1_control_right(SW[0]),
                  .player_2_control_left(SW[7]),
-			 .player_2_control_right(SW[6]),
+		 .player_2_control_right(SW[6]),
                  .player_1_HEX6(hex6Seg),
                  .player_1_HEX7(hex7Seg), 
                  .player_2_HEX4(hex4Seg), 
@@ -90,12 +92,12 @@ o  // Outputs for the VGA adapter  output VGA_CLK;
                  .time_HEX1(hex1Seg), 
                  .time_HEX2(hex2Seg), 
                  .time_HEX3(hex3Seg)
-			 .x_p1_load(),
-				 .y_p1_load(),
-				 .x_p2_load(),
-				 .y_p2_load());
+		 .x_p1_load(),
+		 .y_p1_load(),
+		 .x_p2_load(),
+		 .y_p2_load());
 	
-	tron_datapath tron_d();
+  tron_datapath tron_d();
   
   hex_decoder hex_0(.hex_digit(hex0Seg), .segments(HEX0));
   hex_decoder hex_1(.hex_digit(hex1Seg), .segments(HEX1));
@@ -113,7 +115,7 @@ module snake_control(start,
              clk,
              game_mode,
              player_control_x,
-		 player_control_y,
+	     player_control_y,
              highscore_HEX6,
              highscore_HEX7,
              eaten_objects_HEX4,
@@ -122,8 +124,8 @@ module snake_control(start,
              time_HEX1,
              time_HEX2,
              time_HEX3,
-			 x_load,
-			 y_load);
+	     x_load,
+	     y_load);
   input start;
   input reset;
   input clk;
@@ -141,9 +143,9 @@ module tron_control(start,
             clk, 
             game_mode,
             player_1_control_left,
-			player_1_control_right,
+	    player_1_control_right,
             player_2_control_left,
-			player_2_control_right,
+	    player_2_control_right,
             player_1_HEX6,
             player_1_HEX7,
             player_2_HEX4,
@@ -152,10 +154,10 @@ module tron_control(start,
             time_HEX1,
             time_HEX2, 
             time_HEX3,
-			x_p1_load,
-			y_p1_load,
-			x_p2_load,
-			y_p2_load);
+	    x_p1_load,
+	    y_p1_load,
+	    x_p2_load,
+	    y_p2_load);
   input start;
   input reset;
   input clk;
