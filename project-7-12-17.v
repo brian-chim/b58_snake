@@ -1,4 +1,3 @@
-// BASED UPON STARTER CODE CREATED BY SOMebody onCE TOLD ME
 // UPDATED 07/05/2017
 // Part 2 skeleton
 
