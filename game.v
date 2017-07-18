@@ -40,7 +40,7 @@ module project
     output [6:0] HEX0, HEX1, HEX2, HEX3;
    wire resetn;
    assign resetn = KEY[0];
-    
+
     // Create the colour, x, y and writeEn wires that are inputs to the controller.
    wire [2:0] colourSnakeA, colourSnakeB;
 	assign colourSnakeA = 3'b001;
@@ -74,7 +74,7 @@ module project
         defparam VGA.MONOCHROME = "FALSE";
         defparam VGA.BITS_PER_COLOUR_CHANNEL = 1;
         defparam VGA.BACKGROUND_IMAGE = "tronback.mif";
-            
+
     // Put your code here. Your code should produce signals x,y,colour and writeEn/plot
     // for the VGA controller, in addition to any other functionality your design may require.
   // Instansiate datapathxin
@@ -98,7 +98,7 @@ module project
                .yOffset(yposoff),
                .plot(writeEn)
 					);
-   timeCount count(.SW(1'b1), .CLOCK_50(CLOCK_50), .HEX0(HEX0), .HEX1(HEX1), .HEX2(HEX2), .HEX3(HEX3)); 
+   timeCount count(.SW(1'b1), .CLOCK_50(CLOCK_50), .HEX0(HEX0), .HEX1(HEX1), .HEX2(HEX2), .HEX3(HEX3));
 endmodule
 
 
@@ -113,7 +113,7 @@ module tron_datapath(
     );
     reg [7:0] y_coordinate;
 	 reg [7:0] x_coordinate;
-	 
+
 	initial begin
 		x_coordinate = 8'd25;
 		y_coordinate = 7'd25;
@@ -136,7 +136,7 @@ module tron_datapath(
     assign coordsY = y_coordinate;
     assign coordsX = x_coordinate;
 
-    
+
     // set color
 endmodule
 
@@ -148,17 +148,17 @@ module tron_control(             // THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
     output reg [1:0] xOffset,
     output reg [1:0] yOffset,
     output plot);
-    
+
     reg [2:0] current_state, next_state;
     localparam  down = 2'b00,
                 right      = 2'b01,
                 up      = 2'b10,
                 left      = 2'b11;
-	 
+
     always@(posedge clk)
     begin: state_table
         case (current_state)
-            up: begin: turn_table_1 
+            up: begin: turn_table_1
 			case (SW[3:0])
 				4'b0001: next_state = right;
 				4'b1000: next_state = left;
@@ -172,27 +172,27 @@ module tron_control(             // THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
 								default: next_state = right;
 							 endcase
 						end
-            down: begin: turn_table_3 
+            down: begin: turn_table_3
 							case (SW[3:0])
 								4'b0001: next_state = right;
 								4'b1000: next_state = left;
 								default: next_state = down;
 						  endcase
                   end
-            left: begin: turn_table_4 
+            left: begin: turn_table_4
 							case (SW[3:0])
 								4'b0100: next_state = down;
 								4'b0010: next_state = up;
 								default: next_state = left;
 							endcase
                   end
-            default: next_state = up; 
+            default: next_state = up;
         endcase
     end
 
     // plot
     assign plot = 1;
-    
+
     // assign offset
     always@(*)
     begin: make_output
@@ -204,7 +204,7 @@ module tron_control(             // THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
 				right: begin
 						xOffset <= 2'b01;
 						yOffset <= 2'b00;
-								
+
 						end
             down: begin
                   xOffset <= 2'b00;
@@ -227,6 +227,5 @@ module tron_control(             // THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
         else
             current_state <= next_state;
     end
-                
-endmodule 
 
+endmodule

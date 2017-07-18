@@ -69,16 +69,19 @@ module tron
             .VGA_BLANK(VGA_BLANK_N),
             .VGA_SYNC(VGA_SYNC_N),
             .VGA_CLK(VGA_CLK));
-        defparam VGA.RESOLUTION = "160x120";
-        defparam VGA.MONOCHROME = "FALSE";
-        defparam VGA.BITS_PER_COLOUR_CHANNEL = 1;
-        defparam VGA.BACKGROUND_IMAGE = "tron.mif";
+    defparam VGA.RESOLUTION = "160x120";
+    defparam VGA.MONOCHROME = "FALSE";
+    defparam VGA.BITS_PER_COLOUR_CHANNEL = 1;
+    defparam VGA.BACKGROUND_IMAGE = "tron.mif";
 
     // Put your code here. Your code should produce signals x,y,colour and writeEn/plot
     // for the VGA controller, in addition to any other functionality your design may require.
-  // Instansiate datapathxin
-      wire [1:0] xposoff, yposoff;
-	 always@(posedge CLOCK_50)
+    // Instansiate datapathxin
+    wire [1:0] xposoff, yposoff;
+
+
+
+	always@(posedge CLOCK_50)
 		begin
 			cord[x][y] = 1;
 		end
@@ -98,6 +101,10 @@ module tron
                .plot(writeEn)
 					);
    timeCount count(.SW(1'b1), .CLOCK_50(CLOCK_50), .HEX0(HEX0), .HEX1(HEX1), .HEX2(HEX2), .HEX3(HEX3));
+
+
+
+
 endmodule
 
 
@@ -134,12 +141,10 @@ module tron_datapath(
 	end
     assign coordsY = y_coordinate;
     assign coordsX = x_coordinate;
-
-
     // set color
 endmodule
 
-module tron_control(             // THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
+module tron_control(// THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
     input clk,
     input resetn,
 	 input [3:0] SW,
@@ -191,7 +196,6 @@ module tron_control(             // THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
 
     // plot
     assign plot = 1;
-
     // assign offset
     always@(*)
     begin: make_output
@@ -226,5 +230,9 @@ module tron_control(             // THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
         else
             current_state <= next_state;
     end
+
+endmodule
+
+module reset_screen ()
 
 endmodule
