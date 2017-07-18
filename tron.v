@@ -1,8 +1,7 @@
-// BASED UPON STARTER CODE CREATED BY SOMebody onCE TOLD ME
-// UPDATED 07/05/2017
-// Part 2 skeleton
+// UPDATED 07/18/2017
+// 1:22 p.m.
 
-module tron1
+module tron
     (
         CLOCK_50,                        //    On Board 50 MHz
         // Your inputs and outputs here
