@@ -1,6 +1,6 @@
-// UPDATED 07/20/2017 @00:03 by Brian
+// UPDATED 07/20/2017 09:36 by Brian
 
-module tron (
+module game (
     CLOCK_50,                           //    On Board 50 MHz
     // Your inputs and outputs here
     KEY,
@@ -39,13 +39,18 @@ module tron (
     assign resetn = KEY[0];
 
    // wires for x,y, colour outputs for the two trons
-   wire [7:0] t1x, t2x, x;
-   wire [6:0] t1y, t2y, y;
-   wire [2:0] colourSnakeA, colourSnakeB, colour;
+   wire [7:0] t1x, t2x;
+	reg [7:0] x;
+	reg [6:0] y;
+	reg [2:0] colour;
+   wire [6:0] t1y, t2y;
+   wire [2:0] colourSnakeA, colourSnakeB;
    wire [1:0] xposoff1, yposoff1, xposoff2, yposoff2;
 
-   wire switch;
-   wire writeEn;
+   reg switch;
+   wire writeEn1;
+	wire writeEn2;
+	reg writeEn;
    wire clk_out_fast;
    wire clk_out_slow;
 
@@ -63,7 +68,7 @@ module tron (
    vga_adapter VGA(
         .resetn(resetn),
         .clock(CLOCK_50),
-        .colour(colourSnakeA),
+        .colour(colour),
         .x(x),
         .y(y),
         .plot(writeEn),
@@ -115,7 +120,7 @@ module tron (
         .resetn(KEY[3]),
         .xOffset(xposoff1),
         .yOffset(yposoff1),
-        .plot(writeEn));
+        .plot(writeEn1));
 
     // Instansiate FSM control module for second tron
     tron_control c2(
@@ -125,7 +130,7 @@ module tron (
         .resetn(KEY[3]),
         .xOffset(xposoff2),
         .yOffset(yposoff2),
-        .plot(writeEn));
+        .plot(writeEn2));
 
     // instantiates the timecount module
    timeCount count(
@@ -137,16 +142,21 @@ module tron (
        .HEX3(HEX3));
 
    // draw both snakes
-   always @posedge(CLOCK_50) begin
-      if (switch == 1'b0)
-        assign x = t1x;
-        assign y = t1y;
-        assign colour = colourSnakeA;
-      else
-        assign x = t2x;
-        assign y = t2y;
-        assign colour = colourSnakeB;
-      assign switch = ~switch;
+   always @(posedge CLOCK_50) begin
+      if (switch == 1'b0) begin
+        x <= t1x;
+        y <= t1y;
+        colour <= colourSnakeA;
+		  writeEn <= writeEn1;
+		  end
+      else begin
+        x <= t2x;
+        y <= t2y;
+        colour <= colourSnakeB;
+		  writeEn <= writeEn2;
+		  end
+      switch <= ~switch;
+		end
 
 endmodule
 
@@ -196,6 +206,7 @@ module tron_datapath_2(
 	  output [6:0] coordsY,
     input [1:0] xOffset,
     input  [1:0] yOffset,
+	 output [2:0] colour_out,
     input resetn);
 
     reg [7:0] y_coordinate;
