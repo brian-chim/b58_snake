@@ -49,6 +49,9 @@ module tron (
    wire clk_out;
    rate_divider one_sec(SW[17], CLOCK_50, clk_out);
    reg  [1:0] cord [7:0][6:0];
+
+
+
    // Create an Instance of a VGA controller - there can be only one!
    // Define the number of colours as well as the initial background
    // image file (.MIF) for the controller.
@@ -84,11 +87,13 @@ module tron (
 			cord[x][y] = 1;
 		end
 
+
+
     // instansiates the datapath module
     tron_datapath d0(
         .clk(clk_out),
-        .coordsX(x),
-        .coordsY(y),
+        .coordsX(x), // output
+        .coordsY(y), // output
         .xOffset(xposoff),
         .yOffset(yposoff),
         .resetn(KEY[3]));
@@ -99,17 +104,45 @@ module tron (
 		.SW(SW[3:0]),
         .go(!KEY[2]),
         .resetn(KEY[3]),
-        .xOffset(xposoff),
-        .yOffset(yposoff),
+        .xOffset(xposoff), // output
+        .yOffset(yposoff), //output
         .plot(writeEn));
+
     // instantiates the timecount module
-   timeCount count(
+    timeCount count(
        .SW(1'b1),
        .CLOCK_50(CLOCK_50),
        .HEX0(HEX0),
        .HEX1(HEX1),
        .HEX2(HEX2),
        .HEX3(HEX3));
+
+   // checks if reset is on
+   // iterates through the 2D array positions
+   // declares the genvar values
+    always@(posedge CLOCK_50) begin: check reset
+        if (reset) begin: rest_screen 
+            colour <= 3'b000
+            genvar y_pos, x_pos;
+            generate
+               for (y_pos = 18; y_pos < 107; y_pos ++) {
+                   begin: y_position
+                       for (x_pos = 11; x_pos < 148; x_pos ++) {
+                           begin: x_position
+                                x <= x_pos
+                                y <= y_pos
+                           end
+                   end
+               }
+            endgenerate
+
+        end
+    end
+
+
+
+
+
 endmodule
 
 
@@ -122,15 +155,17 @@ module tron_datapath(
     input  [1:0] yOffset,
     input resetn
     );
-    reg [7:0] y_coordinate;
-	reg [7:0] x_coordinate;
 
-	initial begin
-		x_coordinate = 8'd25;
-		y_coordinate = 7'd25;
-	end
+    reg [7:0] y_coordinate;
+    reg [7:0] x_coordinate;
+
+    initial begin
+    	x_coordinate = 8'd25;
+    	y_coordinate = 7'd25;
+    end
 
     always @(posedge clk) begin
+
         // setup x coordinate
 		if (xOffset == 2'b01)begin
 			x_coordinate <= x_coordinate + 1'b1;
@@ -144,6 +179,7 @@ module tron_datapath(
 		else if (yOffset == 2'b10) begin
 			y_coordinate <= y_coordinate - 1'b1;
 		end
+        //
 	end
     assign coordsY = y_coordinate;
     assign coordsX = x_coordinate;
@@ -254,34 +290,4 @@ module tron_control(// THIS IS THE FSM AND ALSO GIVES X,Y OFFSETS
             current_state <= next_state;
     end
 
-endmodule
-
-module reset_screen (CLOCK_50);
-    // use the faster clock as the input
-    input CLOCK_50;
-    output [0:0] done;
-    output [7:0] x_output;
-    output [6:0] y_output;
-    output [2:0] colour;
-    // create registers for the current x and y position of the eraser
-    reg [7:0] x_position;
-    reg [6:0] y position;
-    reg [0:0] done_game
-
-    always@(posedge CLOCK_50)
-    begin:
-        // if the x position reaches the end of the screen (ie right border)
-        if (x_position == 8'b10000000)
-            begin
-            // checks if we are also on the last line
-            if (y_positon == 7'b1000000)
-                begin
-                    assign done = done_game;
-                end
-            // increments the y position
-            y_position <= y_position + 1;
-            // reset the x position to the beginning of the left border
-            x_position <= 8'b00000100;
-            end
-        end
 endmodule
