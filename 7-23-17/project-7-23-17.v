@@ -147,8 +147,6 @@ module game (
         colour <= colourSnakeA;
 	     writeEn <= writeEn1;
 	     switch <= switch + 1;
-	
-	      board[x][y] <= 1;
         end
       else if (switch == 2'b01) begin
         x <= t2x;
@@ -156,7 +154,6 @@ module game (
         colour <= colourSnakeB;
 	     writeEn <= writeEn2;
 	     switch <= switch + 1;
-	      board[x][y] <= 1;
 	     end
       else
 	     writeEn <= 0;
@@ -171,7 +168,7 @@ module game (
 
    always @(negedge clk_out_fast) begin
    // if the x and y exceed the boundaries
-	   if (x < 8'b00001010 || x > 8'b10010110 || y < 7'b0010001 || y > 7'b1101101 || board[x][y] == 1)
+     if (x < 8'b00001010 || x > 8'b10010110 || y < 7'b0010001 || y > 7'b1101101)
        dead <= 1;
        writeEn <= 1'b0;
        colour <= 3'b000; 
