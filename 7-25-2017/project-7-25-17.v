@@ -148,9 +148,11 @@ module tron (
    //sets up the boarder (git it?)
    reg board[0:159][0:119];
 
+	
+	
    // draw both snakes
    always @(posedge CLOCK_50) begin
-      if (switch == 2'b00) begin
+      if (switch == 2'b00 && dead != 0) begin
         x <= t1x;
         y <= t1y;
         colour <= colourSnakeA;
@@ -182,15 +184,20 @@ module tron (
       end
       else begin
 	     writeEn <= 0;
-      // this if block is to reset the switch value
+			// this if block is to reset the switch value
         if (counter < 10000000)
 	         counter <= counter + 1;
         else begin
-	         counter <= 0;
+	        counter <= 0;
            switch <= 0;
            end
       end
    end
+	
+	
+	
+	
+	
    assign LEDR[0] = dead;
 	hex_decoder player1Score(.hex_digit(p1Score), .segments(HEX4));
    hex_decoder player2Score(.hex_digit(p2Score), .segments(HEX6));
