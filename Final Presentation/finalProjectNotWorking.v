@@ -1,5 +1,4 @@
-// UPDATED 07/25/2017 16:03 by Mason
-// commented by Patrick
+// DO NOT USE - PROBABLY DOES NOT WORK AND TAKES ABOUT 3 HOURS TO COMPILE
 
 // MAIN MODULE
 module game (
