@@ -1,4 +1,4 @@
-// UPDATED 07/27/2017 09:54 by everyone
+// UPDATED 07/27/2017 09:54 by Everyone
 // All VGA files and VGA related code used with credit to Professor Harrington.
 
 // MAIN MODULE
