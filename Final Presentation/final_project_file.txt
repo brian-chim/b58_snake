@@ -1,0 +1,171 @@
+CSCB58 Project File: Summer 2017
+
+Team Member A
+-------------
+First Name: Patrick
+Last Name: Ocampo
+
+Team Member B
+-------------
+First Name: Brian
+Last Name: Chim
+
+Team Member C
+-------------
+First Name: Mason
+Last Name: Tang
+
+Team Member D
+-------------
+First Name: Richard
+Last Name: Wei
+
+Project Details
+---------------
+Project Title: Tron
+
+Project Description:
+A take on the classic game of Tron with 2 players. (with extra features like
+scores and clocks)
+
+Gameplay:
+This is a 2 player game where the objective is to not collide with the border,
+the other player, or the other player’s trail.
+  1. SW [12:9] are player 1’s controls in the order: LEFT UP DOWN RIGHT.
+  2. SW [3:0] are player 2’s controls in the order: LEFT UP DOWN RIGHT.
+  3. SW [17] is a pause switch; if SW [17] is off then the game will pause.
+  4. KEY [3] is a state reset; if either tron freezes (unsure of definitive
+     cause for freezing but happens occasionally if two control switches are
+     flipped at the same time) then a press of KEY [3] will set the direction
+     to UP for both trons.
+  5. KEY [2] is a score incrementer for player 1; it corresponds to HEX7.
+  6. KEY [1] is a score incrementer for player 2; it corresponds to HEX5.
+  7. KEY [0] is a soft reset for the current game; it clears the screen and
+     sends both players back to the starting position in the movement state
+     they were in before the button was pressed.
+  8. HEX [7:6] correspond to player 1’s score; HEX7 is directly increased with
+     KEY [2] presses and HEX6 is increased whenever player 2 collides with a
+     border. (HEX6 increases inconsistently)
+  9. HEX [5:4] correspond to player 2’s score; HEX5 is directly increased with
+     KEY [1] presses and HEX4 is increased whenever player 1 collides with a
+     border or there is a head-to-head collision. (HEX4 increases
+     inconsistently)
+  10. HEX [3:0] is a timer for how long the match has been running (does not
+      reset in between games). Additionally, whenever HEX1 increases, it
+      alternates the speed of the trons; on even numbers the trons move slow
+      whereas on odd numbers the trons move faster.
+  11. LEDR [0] is a light that flashes whenever either player triggers the dead
+      state.
+
+Gameplay Notes:
+  1. A player is not allowed to reverse the direction they are going in.
+     If this occurs then the tron’s direction will remain the same.
+  2. If more than one control is switched on then the tron will continue moving
+     in the direction of the first switch that was flipped. As a result, we
+     encourage the active gameplay choice of flipping off the directional
+     switch after a turn has been made.
+  3. Trail collision is not currently implemented; as a result, the game runs
+     off the honour system. If either player does collide with a trail, then
+     that player will press KEY [0] to soft reset the game, and then press the
+     opposite player’s score key. Additionally, on either player death they
+     will press the opposite player’s score key to give the opponent a point.
+  4. Do not reset the game while the game is currently paused. This may cause
+     unintended side effects such as messing up the starting position of the
+     next game that begins.
+
+Video URL:
+https://www.youtube.com/watch?v=Md1Pqka89nw&feature=youtu.be
+Code URL:
+https://github.com/brian-chim/b58_snake (entire repository)
+https://github.com/brian-chim/b58_snake/tree/master/Final%20Presentation (fin)
+
+
+Proposal
+--------
+What do you plan to have completed by the end of the first lab session?:
+  Be able to get a proper VGA connection with the given monitor and create
+  moving objects to be displayed on said monitor as well as create a counter
+  for the high score
+
+What do you plan to have completed by the end of the second lab session?:
+  Have the basic features of Tron implemented (tron collision with walls
+  and itself, tron growth, etc)
+
+What do you plan to have completed by the end of the third lab session?:
+  Debug any remaining issues and create background image + add music in
+
+What is your backup plan if things don’t work out as planned?
+  Create the game of Simon Says with high score / current score / timer / music
+
+What hardware will you need beyond the DE2 board?
+  1. Monitor
+
+Motivations
+-----------
+How does this project relate to the material covered in CSCB58?:
+  We will be switches as input to the movement of a tron and utilize flip-flops
+  to create a finite state machine to monitor the different states of the
+  tron(size of the tron, tron collision, tron direction)
+
+Why is this project interesting/cool (for CSCB58 students, and for non CSCB58
+students?):
+  This project will involve us taking a simple arcade classic and creating our
+  own enhanced version of it using the knowledge gained from lectures and
+  previous labs.
+
+Why did you personally choose this project?:
+  We wanted to extend our knowledge of FSMs to recreate the game of Tron which
+  we enjoy playing, and which utilizes many different and constantly
+  changing states.
+
+Attributions
+------------
+Provide a complete list of any external resources your project used
+  1. Professor Harrington’s various VGA codes.
+
+Updates
+-------
+Week 1:
+  1. Decided to definitely create Tron and allow for the games to be switched
+     between with a switch flip.
+  2. Decided we wanted to create music using one of last semester’s codes for
+     keyboard.
+  3. Managed to get most of the basic movement of the Tron bike completed
+     (still need to change the speed at which it moves on the screen as well as
+     handle invalid movements that cause implosion on the Tron bike)
+  4. Decided to also make a labyrinth game which will build off Tron instead of
+     making Snake
+  5. Finished making the timer for the game (counts up to 9999 seconds)
+  6. Currently working on making backgrounds with .mif files
+
+Week 2:
+  1. Made the .mif files for the Tron game background
+  2. Currently working on getting proper collision detection
+  3. Currently working on how to cycle between game-over state and the
+     game-beginning state
+  4. Still deciding on whether keys or switches should be used for player
+     control
+
+Week 3:
+  1. Replaced the current .mif file with a better version of it
+  2. Implemented score counters for both players
+  3. Currently implementing extra features (just in case we can’t figure out
+     collision)
+  4. Added in the second player
+  5. Still working on collision
+
+Week 4:
+  1. Cannot create 2-D array to hold all the board positions (takes 3 hours to
+     compile and test) - therefore no trail collision implementation
+  2. Implemented head-to-head collision
+  3. Implemented board collision
+  4. Implemented SW [2:1] to serve as “honour system” score because automatic
+     score counter broke after adding in board collision
+  5. Changed second player implementation so that each player is only drawn
+     once per clock-cycle rather than always drawing over itself until a new
+     position is found
+  6. Implemented board reset - both clear and position
+  7. Replaced the .mif file again
+  8. Created two different speeds that the trons would alternate between every
+     10 seconds
+  9. Added LEDR [0] flash on dead state
