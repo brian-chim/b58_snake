@@ -1,4 +1,5 @@
 // UPDATED 07/27/2017 09:54 by everyone
+// All VGA files and VGA related code used with credit to Professor Harrington.
 
 // MAIN MODULE
 module game (
