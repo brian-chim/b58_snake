@@ -1,5 +1,4 @@
-// UPDATED 07/25/2017 16:03 by Mason
-// commented by Patrick
+// UPDATED 07/27/2017 09:54 by everyone
 
 // MAIN MODULE
 module game (
